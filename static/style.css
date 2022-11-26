@@ -1,0 +1,70 @@
+#drobtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+
+#drodown{
+    position: relative;
+}
+
+#drodown-content{
+    color :rgb(255, 0, 0);
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+#drodown:hover .dropdown-content {display: block;}
+
+#color{
+    background-color: rgb(241, 241, 241);
+}
+
+textarea{
+    width:100%;
+}
+
+h1{
+    font-weight:bold;
+    color : rgb(102, 204, 230);
+}
+
+#cont1{
+    background-color: rgb(247, 247, 247);
+    margin : 10px;
+}
+#cont2{
+    padding : 10px;
+    align-items: center;
+}
+
+#text1{
+    font-size:15px;
+    color:rgb(66, 63, 223);
+}
+
+#text2{
+    font-size:25px;
+    color:rgb(147, 147, 248);
+}
+
+#text3{
+    font-size:11px;
+    color:rgb(41, 200, 248);
+}
+
+input[type=submit]{
+    margin-top:10px;
+}
+
+#box1{
+    background-color: rgb(28, 126, 255);
+    margin : 100px;
+}
+

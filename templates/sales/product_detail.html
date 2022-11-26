@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class = "container my-3">
+    <h1 class = "border-bottom py-2">{{product.pcode}}</h1>
+    <div class = "card text-white bg-info mb-3">
+        <div class = "card-body">
+            <table width = 100%>
+                <td>
+                    <table align = 'left'>
+                        <tr>
+                            <th>티켓 코드&nbsp&nbsp</th>
+                            <td> :&nbsp&nbsp{{ product.pcode}}</td>
+                        </tr>
+                        <tr>
+                            <th>영화 이름&nbsp&nbsp</th>
+                            <td> :&nbsp&nbsp{{ product.pname}}</td>
+                        </tr>
+                        <tr>
+                            <th>상영 시간&nbsp&nbsp</th>
+                            <td> :&nbsp&nbsp{{ product.ptime}} 분</td>
+                        </tr>
+                        <tr>
+                            <th>장&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp르&nbsp&nbsp</th>
+                            <td> :&nbsp&nbsp{{ product.jang}}</td>
+                        </tr>
+                        <tr>
+                            <th>단&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp가&nbsp&nbsp</th>
+                            <td> :&nbsp&nbsp{{ product.unitprice}}</td>
+                        </tr>
+                        <tr>
+                            <th>할&nbsp&nbsp인&nbsp&nbsp율 </th>
+                            <td> :&nbsp&nbsp{{ product.discountrate}}</td>
+                        </tr>
+                        <tr>
+                            <th>게&nbsp&nbsp시&nbsp&nbsp자 </th>
+                            <td> :&nbsp&nbsp{{ product.author.username }}</td>
+                        </tr>
+                    </table>
+                </td>
+                
+                <td align = 'right'>
+                    {% if product.img_file %}
+                    <img src = {{ product.img_file.url }} style = "max-width:300px"></img>
+                    {% endif %} 
+                </td>       
+            </table>
+        </div>
+    </div>
+    <div align = 'right'>
+        <hr></hr>
+        <table align = 'right'>
+            <input type = "number" id = "tNum" name = "tNum"> 매&nbsp&nbsp</input>
+            <button id = "numBtn" class = "btn btn-sm btn-info">결제</button>
+        </table>
+    {% if user.is_superuser %}
+        <hr></hr>
+        <table align = 'right'>
+            <tr>
+                <td>
+                    <div class = "my-3">
+                        <a href = "{% url 'sales:product_modify' product.id %}" class = "btn btn-sm btn-info">수정</a>
+                    </div>
+                </td>
+                <td>
+                    <div class="my-3">
+                        <a href="#" class="deltn btn btn-sm btn-info" data-uri="{% url 'sales:product_delete' product.id %}">삭제</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+    </div>
+</div>
+
+<form id = "submit_form" method = "get" action = {% url 'sales:sales_create' product.id %}>
+    <input type = "hidden" id = "tNumber" name = "tNumber" value = "{{ tNum.value }}">
+</form>
+
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $('.deltn').on('click', function() {
+            if(confirm('정말로 삭제합니까?')){
+                location.href = $(this).data('uri');
+            }
+        });
+    });
+
+const numBtn = document.getElementById("numBtn");
+numBtn.addEventListener('click', function() { 
+    if(document.getElementById('tNum').value > 0) {
+        document.getElementById('tNumber').value = document.getElementById('tNum').value;
+        document.getElementById('submit_form').submit();
+    };   
+ });
+</script>
+{% endblock %}

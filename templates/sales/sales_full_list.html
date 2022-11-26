@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+            
+<html lang='ko'>
+<head>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body id = "color">
+    <div class="container my-3">
+        <table class="table table-sm">
+            <thead>
+                <tr class="text-center thead-info">
+                    <th>No</th>
+                    <th>티켓 코드</th>
+                    <th>영화 이름</th>
+                    <th>판매 일시</th>
+                    <th>판매 갯수</th>
+                    <th>판매 금액</th>
+                    <th>포 스 터</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table %}
+                <tr class="text-center tbody-info">
+                    <td allign = 'center'>{{ row.0 }}</td>
+                    <td allign = 'center'>{{ row.1 }}</td>
+                    <td allign = 'center'>{{ row.2 }}</td>
+                    <td allign = 'center'>{{ row.3 }}</td>
+                    <td allign = 'center'>{{ row.4 }}</td>
+                    <td allign = 'center'>{{ row.5 }}</td>
+                    <td allign = 'center'>{% if row.6 %}
+                        <a href = "{% url 'sales:media' row.6 %}" target = "_blank" class = "badge badge-secondary py-1">미리보기</a>
+                        {% endif %}</td>
+                </tr>
+         
+               
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+{% endblock %}

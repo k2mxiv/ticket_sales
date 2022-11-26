@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<body id = 'cont1'>
+<div class = "container">
+    <div class = "card text-white bg-primary mb-3" id = 'cont2'>
+        <h2>티켓 등록</h2>
+    </div>
+    <form method="post" id = 'text1' enctype = "multipart/form-data">
+        {% csrf_token %}
+        <!-- 오류 표시 -->
+        {% if form.errors %}
+            <div class = "alert alert-danger" role = "alert">
+                {% for field in form %}
+                    {% if field.errors %}
+                    <strong>{{ field.label }}</strong>
+                    {{ field.errors }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <!-- 오류 표시 end -->
+        <div class = "form-group">
+            <label for = "pcode">티켓 번호</label>
+            <input type = "text" class = "form-control" name = "pcode" id = "pcode" value = "{{ form.pcode.value|default_if_none:'' }}">
+        </div>
+        <div class = "form-group">
+            <lavel for = "pname">영화 이름</label>
+            <textarea class = "form-control" name = "pname" id = "pname" rows = "1">{{ form.pname.value|default_if_none:''}}</textarea>
+        </div>
+        <div class = "form-group">
+            <lavel for = "jang">장&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp르</label>
+                <input type = "text" class = "form-control" name = "jang" id = "jang" value = "{{ form.jang.value|default_if_none:'' }}">
+        </div>
+        <div class = "form-group">
+            <lavel for = "ptime">상영 시간</label>
+                <input type = "text" class = "form-control" name = "ptime" id = "ptime" value = "{{ form.ptime.value|default_if_none:0 }}">
+        </div>
+        <div class = "form-group">
+            <label for 'unitprice'>가&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp격</label>
+            <input type = "text" class = "form-control" name = "unitprice" id = "unitprice" value = "{{ form.unitprice.value|default_if_none:0}}">
+        </div>
+        <div class = "form-group">
+            <label for 'discountrate'>할&nbsp인&nbsp&nbsp율</label>
+            <input type = "text" class = "form-control" name = "discountrate" id = "discountrate" value = "{{ form.discountrate.value|default_if_none:0}}">
+        </div>
+        <div class = "form-group">
+            <label for 'img_file'>사진 등록</label>
+            <input type = "file" class = "form-control" name = "img_file" id = "img_file" value = "{{ form.img_file.value|default_if_none:''}}">
+        </div>
+        <hr>
+        <button type="submit" class = "btn btn-primary">저장하기</button>
+    </form>
+</div>
+</body>
+{% endblock %}

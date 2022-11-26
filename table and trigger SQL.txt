@@ -1,0 +1,115 @@
+###create table###
+
+create table sales_log(
+	pcode varchar(10),
+    	pname longtext,
+    	unitprice int,
+    	discountrate decimal(11, 2),
+    	img_file varchar(100),
+    	jang longtext,
+    	ptime int,
+    	author_id int,
+    	modify_date datetime(6),
+    	stat varchar(10)
+);
+
+###trigger ###
+
+
+DELIMITER //
+	create trigger sales_product_log
+	before delete on sales_product
+    for each row
+    begin
+		declare lcodeTemp varchar(10);
+        declare lnameTemp longtext;
+        declare unitpriceTemp int;
+        declare discountrateTemp decimal(11, 2);
+        declare img_fileTemp varchar(100);
+        declare jangTemp longtext;
+        declare ptimeTemp int;
+        declare author_idTemp int;
+        declare create_dateTemp datetime(6);
+        set lcodeTemp = old.pcode;
+        set lnameTemp = old.pname;
+        set unitpriceTemp = old.unitprice;
+        set discountrateTemp = old.discountrate;
+        set img_fileTemp = old.img_file;
+        set jangTemp = old.jang;
+        set ptimeTemp = old.ptime;
+        set author_idTemp = old.author_id;
+        set create_dateTemp = old.create_date;
+        insert into sales_log values(0, lcodeTemp, lnameTemp, unitpriceTemp, discountrateTemp, img_fileTemp, jangTemp, ptimeTemp, author_idTemp, create_dateTemp, 'Delete', current_timestamp);
+	end //
+DELIMITER ;
+
+
+###modify###
+
+
+DELIMITER //
+	create trigger sales_product_log_modify
+	before update on sales_product
+    for each row
+    begin
+		declare pcodeTemp varchar(10);
+        declare pnameTemp longtext;
+        declare unitpriceTemp int;
+        declare discountrateTemp decimal(11, 2);
+        declare img_fileTemp varchar(100);
+        declare jangTemp longtext;
+        declare ptimeTemp int;
+        declare author_idTemp int;
+        declare create_dateTemp datetime(6);
+        set pcodeTemp = new.pcode;
+        set pnameTemp = new.pname;
+        set unitpriceTemp = new.unitprice;
+        set discountrateTemp = new.discountrate;
+        set img_fileTemp = new.img_file;
+        set jangTemp = new.jang;
+        set ptimeTemp = new.ptime;
+        set author_idTemp = new.author_id;
+        set create_dateTemp = new.create_date;
+        insert into sales_log values(0, pcodeTemp, pnameTemp, unitpriceTemp, discountrateTemp, img_fileTemp, jangTemp, ptimeTemp, author_idTemp, create_dateTemp, 'Modify', current_timestamp);
+	end //
+DELIMITER ;
+
+
+###insert###
+
+
+DELIMITER //
+	create trigger sales_product_log_create
+	before insert on sales_product
+    	for each row
+    	begin
+	declare pcodeTemp varchar(10);
+        declare pnameTemp longtext;
+        declare unitpriceTemp int;
+        declare discountrateTemp decimal(11, 2);
+        declare img_fileTemp varchar(100);
+        declare jangTemp longtext;
+        declare ptimeTemp int;
+        declare author_idTemp int;
+        declare create_dateTemp datetime(6);
+        set pcodeTemp = new.pcode;
+        set pnameTemp = new.pname;
+        set unitpriceTemp = new.unitprice;
+        set discountrateTemp = new.discountrate;
+        set img_fileTemp = new.img_file;
+        set jangTemp = new.jang;
+        set ptimeTemp = new.ptime;
+        set author_idTemp = new.author_id;
+        set create_dateTemp = new.create_date;
+        insert into sales_log values(pcodeTemp, pnameTemp, unitpriceTemp, discountrateTemp, img_fileTemp, jangTemp, ptimeTemp, author_idTemp, create_dateTemp, 'Create', current_timestamp);
+	end //
+DELIMITER ;
+
+
+### all history ###
+
+select p_tb.id, scode, ifnull(lname, pname), sdate, qty, amt from(
+	select sales_sales.id, scode, lname, sdate, qty, amt, id_tb.log_date from(
+		select id, log_date, min(logno) as logno from sales_sales left join sales_log on (scode = lcode) and (sdate < log_date) and (sdate > product_date) group by id
+	)id_tb left join sales_sales on (sales_sales.id = id_tb.id) left join sales_log on id_tb.logno = sales_log.logno
+)p_tb left join sales_product on (scode = pcode) and (sdate > create_date);

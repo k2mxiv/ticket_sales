@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class = "container my-3">
+    <div class = "row">
+        <div class = "col-4">
+            <h4>로그인</h4>
+        </div>
+        <div class = "col-8 text-right">
+            <spqn> 또는 <a href = "{% url 'common:signup' %}">계정을 만드세요.</a>
+            </span>
+        </div>
+    </div>
+    <hr></hr>
+    <form method = "post" class = "post-form" action = "{% url 'common:login' %}">
+        {% csrf_token %}
+        <input type = "hidden" name = "text" value = "{{ next }}">
+        {% include "form_errors.html" %}
+        <table width = 100%>
+            <tr>
+                <td>
+                    <label for = "username">사용자 ID</label>
+                </td>
+                <td>
+                    <input type = "text" class = "form-control" name = "username" id = "username" value = "{{ form.username.value|default_if_none:'' }}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                        <label for = "password">비밀번호</label>
+                </td>
+                <td>
+                    <input type = "password" class = "form-control" name = "password" id = "password" value = "{{ form.password.value|default_if_none:''}}">
+                </td>
+            </tr>
+        </table>
+        <hr></hr>
+        <table width = 100%>
+            <tr align = "right">
+                <td>
+                    <button type = "submit" class = "btn btn-info">로그인</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}
